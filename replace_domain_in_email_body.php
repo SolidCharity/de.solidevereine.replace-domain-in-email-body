@@ -52,3 +52,25 @@ function replace_domain_in_email_body_civicrm_entityTypes(&$entityTypes): void {
 //  ]);
 //  _replace_domain_in_email_body_civix_navigationMenu($menu);
 //}
+
+/**
+ * Implementation of hook_civicrm_alterMailParams
+ */
+function replace_domain_in_email_body_civicrm_alterMailParams(&$params, $context) {
+    if (empty($params['text'])) {
+        return;
+    }
+
+    $domain_behind_vpn = 'civicrm2.wordpress.beispielverein.de';
+    // TODO $domain_behind_vpn = CRM_Core_BAO_Domain::getDomain();
+    // TODO: use a setting for the domain name that is the proxy for public access
+    // $domain_public = str_replace('civicrm2.', 'civi2.', $domain_behind_vpn);
+    //$domain_public = str_replace('crm.', 'civicrm.', $domain_behind_vpn);
+    $domain_public = 'civi2.wordpress.beispielverein.de';
+
+    $params['text'] = str_replace($domain_behind_vpn, $domain_public, $params['text']);
+
+    if (!empty($params['html'])) {
+        $params['html'] = str_replace($domain_behind_vpn, $domain_public, $params['html']);
+    }
+}
