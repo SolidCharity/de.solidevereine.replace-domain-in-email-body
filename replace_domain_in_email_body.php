@@ -61,12 +61,11 @@ function replace_domain_in_email_body_civicrm_alterMailParams(&$params, $context
         return;
     }
 
-    $domain_behind_vpn = 'civicrm2.wordpress.beispielverein.de';
-    // TODO $domain_behind_vpn = CRM_Core_BAO_Domain::getDomain();
+    $domain_behind_vpn = Civi::paths()->getVariable('cms.root', 'url');
+
     // TODO: use a setting for the domain name that is the proxy for public access
-    // $domain_public = str_replace('civicrm2.', 'civi2.', $domain_behind_vpn);
-    //$domain_public = str_replace('crm.', 'civicrm.', $domain_behind_vpn);
-    $domain_public = 'civi2.wordpress.beispielverein.de';
+    $domain_public = str_replace('civicrm2.', 'civi2.', $domain_behind_vpn);
+    $domain_public = str_replace('crm.', 'civicrm.', $domain_public);
 
     $params['text'] = str_replace($domain_behind_vpn, $domain_public, $params['text']);
 
